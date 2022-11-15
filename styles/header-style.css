@@ -1,0 +1,328 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
+
+.header {
+    width: 100%;
+    height: 100vh;
+    background-color: #f7e018;
+    overflow: hidden;
+}
+
+
+.menu {
+    position: fixed;
+    background-color: #333335;
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    height: 70px;
+}
+
+
+
+/* Estilos del Logo */
+.logo {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+
+.logo__icon {
+    color: #f7e018;
+    font-size: 50px;
+}
+
+
+.logo__title {
+    color: #f2f2f2;
+    margin-left: 8px;
+}
+
+
+
+/* Estilos de los ul, li y a */
+.links {
+    height: 100%;
+    display: flex;
+    /* border: 1px solid red; */
+}
+
+
+.links, .submenu {
+    list-style: none;
+}
+
+
+.links__i {
+    position: relative;
+}
+
+
+.links__button {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: 0 25px;
+}
+
+
+.links__button:hover {
+    cursor: pointer;
+    background-color: #464647;
+}
+
+
+.container-icon__icon {
+    color: #f2f2f2;
+    font-size: 22px;
+    margin-left: 10px;
+}
+
+
+.container-icon__icon.hidden {
+    display: none;
+}
+
+
+
+.links__button, .submenu__a {
+    color: #f2f2f2;
+    font-size: 20px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+
+.submenu {
+    background-color: #222223;
+    position: absolute;
+    top: 70px;
+    left: 0;
+    width: 250px;
+    overflow: visible;
+    z-index: 1000;
+}
+
+/* .submenu.visible {
+    opacity: 1;
+    visibility: visible;
+} */
+
+
+
+.submenu__a {
+    display: block;
+    padding: 30px 30px 30px 60px;
+    /* border: 1px solid blue; */
+}
+
+.submenu__a:hover {
+    background-color: #464647;
+}
+
+
+
+/* Estilos del Boton mas >>  */
+.more-chapters {
+    display: flex;
+    align-items: center;
+    position: relative;
+    /* border: 1px solid red; */
+}
+
+.more-chapters:hover {
+    cursor: pointer;
+    background-color: #464647;
+}
+
+
+.more-chapters__i {
+    color: #f2f2f2;
+    font-size: 22px;
+}
+
+
+.more-chapters:hover .more-chapters__i {
+    color: #777;
+}
+
+
+.submenu-more {
+    list-style: none;
+    background-color: #222223;
+    width: 250px;
+    position: absolute;
+    top: 70px;
+    left: 0;
+    z-index: 1000;
+    transition: all 0.3s;
+}
+
+/* .submenu-more.visible {
+    opacity: 1;
+    visibility: visible;
+} */
+
+
+.submenu-more__i {
+    position: relative;
+}
+/* .submenu-more__i:hover {
+    background-color: #464647;
+} */
+
+
+.submenu-more__btn {
+    color: #f2f2f2;
+    font-size: 20px;
+    font-weight: bold;
+    text-decoration: none;
+    display: block;
+    padding: 30px 30px 30px 60px;
+}
+
+.submenu-more__btn:hover {
+    background-color: #464647;
+}
+
+.submenu-more__secound {
+    /* top: 84px; */
+    top: 0;
+    left: 250px;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.submenu-more__i:hover .submenu-more__secound {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+/* Estilos con JavaScript */
+/* #submenu-more.submenu-more--active {
+    opacity: 1;
+    visibility: visible;
+} */
+
+
+/* .btn-chapters:hover .submenu-more__secound{
+    opacity: 1;
+    visibility: visible;
+    background-color: rebeccapurple;
+} */
+
+
+
+.title {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.title__secound {
+    margin-right: 18px;
+    text-align: center;
+}
+
+
+.title__h2 {
+    color: #333335;
+    font-size: 2.5em;
+    display: none;
+}
+
+.title__h2.animate__slideInLeft {
+    display: block;
+}
+
+
+.title__line {
+    width: 100%;
+    height: 3px;
+    background-color: #333335;
+    margin: 10px 0;
+    display: none;
+}
+
+.title__line.animate__slideInRight {
+    display: block;
+}
+
+
+.title__p {
+    color: #333335;
+    font-size: 2em;
+    display: none;
+}
+
+.title__p.animate__slideInUp {
+    display: block;
+}
+
+
+.title__first {
+    font-size: 10em;
+    margin-left: 20px;
+    display: none;
+}
+
+.title__first.animate__zoomIn {
+    display: block;
+}
+
+
+
+.scroll {
+    background-color: blue;
+    width: 100%;
+    height: 100px;
+}
+
+
+
+
+/* Responsive Desing */
+
+@media screen and (max-width: 1200px) {
+
+}
+
+
+
+@media screen and (max-width: 1000px) {
+
+}
+
+
+
+@media screen and (max-width: 700px) {
+
+}
+
+
+
+/* Responsive Design - Huawei Mate 9 */
+@media screen and (max-width: 431px) {
+
+}
+
+
+
+/* Responsive Design - Huawei Y9 */
+@media screen and (max-width: 400px) {
+    
+}
