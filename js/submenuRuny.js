@@ -3,26 +3,19 @@ import { WindowClose } from "./modules/windowClose.js";
 
 // Funcion que cambia la posicion del icon al abrir o cerrar el submenu.
 export const changeIconPosition = (status, index, position) => {
-    // Obtenemos los dos icon.
-    const containerIcon = document.querySelectorAll('.container-icon');
-    
-    // Agregamos y quitamos la clase 'hidden'.
+    const containerIcon = document.querySelectorAll('.container-icon');    
     const firstIcon = containerIcon[index].firstElementChild.classList.toggle('hidden');
     const secoundIcon = containerIcon[index].lastElementChild.classList.toggle('hidden');
 
 
-    // Validamos la funcion a realizar.
     if (status == 'closeAndOpen') {
-        // Al cerrar el submenu cambiamos el icono a cerrado.
         containerIcon[position].firstElementChild.classList.remove('hidden');
         containerIcon[position].lastElementChild.classList.add('hidden');
 
-        // Al abrir un nuevo submenu cambiamos de icono.
         firstIcon;
         secoundIcon;
 
     } else {
-        // Cambiamos de abierto o cerrado el icono dependiendo de si tenga o no la clase 'hidden'.
         firstIcon;
         secoundIcon;
     }
@@ -54,13 +47,20 @@ export class SubmenuRuny {
     }
 
 
-    hiddenSubmenu() {
+    // Funcion que oculta o muestra un submenu y agrega o remueve la clase open-runy.
+    changeStylesAndRemoveOrAddClass(toDo, position) {
+     
+        if (toDo == 'show') {       
+            this.submenuElement[position].style.opacity = '1';
+        
+        } else {
+            this.submenuElement[position].style.opacity = '0';
 
-        for (const element of this.submenuElement) {
-            element.style.display = 'none';
         }
+
+        this.submenuElement[position].classList.toggle('open-runy');
     }
-    
+
     
     // Funcion que cierra o cierra y abre un submenu.
     closeAndOpenSubmenu(index) {
@@ -68,9 +68,9 @@ export class SubmenuRuny {
         let position;
     
         for (let i = 0; i < this.submenuElement.length; i++) {
-            const submenu = this.submenuElement[i].classList.contains('visible');
+            const submenu = this.submenuElement[i].classList.contains('open-runy');
 
-            // Comprobamos si el elemento tiene la clase 'visible' y que sean de la misma posicion para cerrarlo
+            // Comprobamos si el elemento tiene la clase 'open-runy' y que sean de la misma posicion para cerrarlo
             if (submenu && i == index) {
                 close = true;
                 position = i;
@@ -82,39 +82,45 @@ export class SubmenuRuny {
         }
     
     
-        const liRemoveClass = this.submenuElement[position].classList.remove('visible');
-     
+        // Ocultamos el submenu.
+        const hiddenSubmenu = this.changeStylesAndRemoveOrAddClass('hidden', position);
+        
         // Cerramos submenu.
         if (close) {
-            liRemoveClass;
+            hiddenSubmenu;
+
+            // Cambiamos la posicion del icono a Close.
             changeIconPosition('close', index);
         
         // Cerramos y abrimos submenu.
         } else {
-            liRemoveClass;
-            this.submenuElement[index].classList.add('visible');
+            // Cerramos el submenu...
+            hiddenSubmenu;
+
+            // abrimos el nuevo submenu... 
+            this.changeStylesAndRemoveOrAddClass('show', index);
             changeIconPosition('closeAndOpen', index, position);
         }
     }
 
     
-    // Funcion que abre un submenu agregandole la clase 'visible'.
+    // Funcion que abre un submenu agregandole la clase 'open-runy' y cambiando los estilos del submenu.
     openSubmenu(index) {
-        this.submenuElement[index].classList.add('visible');
- 
+        this.changeStylesAndRemoveOrAddClass('show', index);
+        
         // al abrir el submenu cambiamos el icono a open.
         changeIconPosition('open', index);
 
 
         // Si esta abierto el submenuMore lo cerrramos.
-        const submenuMore = document.getElementById('submenu-more');
+        // const submenuMore = document.getElementById('submenu-more');
 
-        if (submenuMore.classList.contains('visible')) {
-            submenuMore.classList.remove('visible');
-        }
+        // if (submenuMore.classList.contains('visible')) {
+        //     submenuMore.classList.remove('visible');
+        // }
 
-        const elementClassesOmit  = ['links__button', 'container-icon', 'container-icon__icon'];
-        windowClose.submenu(this.submenuElement, elementClassesOmit);
+        // const elementClassesOmit  = ['links__button', 'container-icon', 'container-icon__icon'];
+        // windowClose.submenu(this.submenuElement, elementClassesOmit);
     }
 
 
@@ -122,15 +128,15 @@ export class SubmenuRuny {
     submenuMain (index) {
         let open = false;
     
-        // Checamos si algun elemento contenga la clase 'visible'.
+        // Checamos si algun elemento contenga la clase 'open-runy'.
         for (const submenu of this.submenuElement) {
-            if (submenu.classList.contains('visible')) {
+            if (submenu.classList.contains('open-runy')) {
                 open = true;
             }
         }
     
     
-        // Si lo contiene llamamos a la funcion que abre o cierra un submenu pasandole la posicion del elemento al que se hizo click.
+        // Si lo contiene llamamos a la funcion que cierra o cierra y abre un submenu pasandole la posicion del elemento al que se le hizo click.
         if (open) {
             this.closeAndOpenSubmenu(index);
             
@@ -156,14 +162,14 @@ export class SubmenuRuny {
     }
 
 
-
+    // Funcion para iniciar.
     start() {
+        // Obtenemos el valor de isNodeList True/False.
         const isnodelist = this.isNodeList();
 
-        this.hiddenSubmenu();
         if (isnodelist) {
 
-            // Al hacer click a cada uno de los elementos de la  clase 'links__i' llamamos el metodo del objeto submenuMethods.
+            // Al hacer click a cada uno de los elementos del 'btn-runy' llamamos el metodo principal.
             this.btnSubmenu.forEach( (btnElement, index) => {
                 btnElement.addEventListener('click', () => {
 
@@ -175,9 +181,24 @@ export class SubmenuRuny {
             });
 
             
+        // En caso de que no sea un nodelist...
         } else {
             console.log('No es node list')
         }
     
     }
 }
+
+
+
+// Variables necesarias.
+const btnRuny = document.querySelectorAll('.btn-runy');
+
+const submenuRuny = document.querySelectorAll('.submenu-element-runy');
+
+const elementClassesOmitRuny = 'item-skip';
+
+
+// Objeto para abrir o cerrar un submenu.
+const submenu = new SubmenuRuny(btnRuny, submenuRuny, elementClassesOmitRuny);
+submenu.start()

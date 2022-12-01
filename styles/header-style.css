@@ -326,3 +326,7 @@ body {
 @media screen and (max-width: 400px) {
     
 }
+
+.submenu-element-runy {
+    opacity: 0;
+}
