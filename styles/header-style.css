@@ -328,5 +328,5 @@ body {
 }
 
 .submenu-element-runy {
-    opacity: 0;
+    display: none;
 }
