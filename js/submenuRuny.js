@@ -1,27 +1,27 @@
-
-
-
 // Funcion que cambia la posicion del icon al abrir o cerrar el submenu.
-const changeIconPosition = (status, index, position) => {
-    const containerIcon = document.querySelectorAll('.container-icon');    
-    const firstIcon = containerIcon[index].firstElementChild.classList.toggle('hidden');
-    const secoundIcon = containerIcon[index].lastElementChild.classList.toggle('hidden');
+function changeIconPosition (status, index, previousIndex) {
+    const containerIcon = document.querySelectorAll('.container-icon');
+    let position = index;
 
+    function addOrRemoveIcon () {
+        containerIcon[position].firstElementChild.classList.toggle('hidden');
+        containerIcon[position].lastElementChild.classList.toggle('hidden');
+    }
 
+    // Cerrar y abrir icono...
     if (status == 'closeAndOpen') {
-        containerIcon[position].firstElementChild.classList.remove('hidden');
-        containerIcon[position].lastElementChild.classList.add('hidden');
+        // Abrir
+        addOrRemoveIcon();
 
-        firstIcon;
-        secoundIcon;
+        // Cerrar
+        position = previousIndex;
+        addOrRemoveIcon();
 
+    // Cerrar o abrir icono...
     } else {
-        firstIcon;
-        secoundIcon;
+        addOrRemoveIcon();
     }
 }
-
-
 
 // Clase que cierra un submenu al hacer scroll.
 class CloseSubmenuScroll {
@@ -46,8 +46,6 @@ class CloseSubmenuScroll {
     
     }
 }
-
-
 
 // Clase que cierra un submenu al hacer click en cualquier parte de la pagina web.
 class CloseSubmenuScreen {
@@ -102,8 +100,6 @@ class CloseSubmenuScreen {
     }
 }
 
-
-
 class SubmenuRuny {
     constructor(btnSubmenu, submenuElement, elementClassesOmit) {
         this.btnSubmenu = btnSubmenu;
@@ -111,7 +107,6 @@ class SubmenuRuny {
         this.elementClassesOmit =  elementClassesOmit;
         this.setOfSubmenus = false;
     }
-
 
     // Retorna True/False/Mensaje dependiendo de si solo es un submenu, conjunto de submenus o no existe ningun submenu.
     howManySubmenus() {
@@ -122,13 +117,13 @@ class SubmenuRuny {
         // Validar que exitan botones y submenus...
         if (btnSubmenuLen > 0 || submenuElementLen > 0) {
 
-                // Cuando solo exista un boton y un submenu...
+            // Cuando solo exista un boton y un submenu...
             if (btnSubmenuLen == 1 && submenuElementLen == 1) {
                 value = false;
-                // Cuando existan mas de dos...    
+            // Cuando existan mas de dos...    
             } else if (btnSubmenuLen == submenuElementLen) {
                 value = true;
-                // Cuando existan unos y otros no...
+            // Cuando existan unos y otros no...
             } else {
                 value = 'no coinciden (alguna clase no agregada)'
             }
@@ -140,23 +135,20 @@ class SubmenuRuny {
         return value;
     }
 
-
     // Funcion que oculta o muestra un submenu y agrega o remueve la clase open-runy.
     changeStylesAndRemoveOrAddClass(toDo, submenuElement) {
         const windowScroll = new CloseSubmenuScroll();
         const windowClick = new CloseSubmenuScreen();
 
-        
         if (toDo == 'show') {
             submenuElement.style.display = 'block';
 
             // Cerramos el submenu al hacer scroll.
-            // windowScroll.closeSubmenu(this.submenuElement);
+            windowScroll.closeSubmenu(this.submenuElement);
 
             // Cerramos el submenu al hacer click en cualquier parte de la pantalla.
-            // windowClick.closeSubmenu(this.submenuElement, this.elementClassesOmit);
+            windowClick.closeSubmenu(this.submenuElement, this.elementClassesOmit);
         
-
         } else {
             submenuElement.style.display = 'none';
         }
@@ -186,14 +178,9 @@ class SubmenuRuny {
                 // En caso de que no sea de la misma posicion cerramos y abrimos un submenu.
                 } else if (submenu && i != index) {
                     position = i;
-                }        
+                } 
             }
-
-            for (const key in object) {
-                // Code...
-            }
-        
-        
+ 
             // Ocultamos el submenu.
             const hiddenSubmenu = this.changeStylesAndRemoveOrAddClass('hidden', this.submenuElement[position]);
             
@@ -202,7 +189,7 @@ class SubmenuRuny {
                 hiddenSubmenu;
     
                 // Cambiamos la posicion del icono a Close.
-                // changeIconPosition('close', index);
+                changeIconPosition('close', index);
             
             // Cerramos y abrimos submenu.
             } else {
@@ -211,18 +198,17 @@ class SubmenuRuny {
     
                 // abrimos el nuevo submenu... 
                 this.changeStylesAndRemoveOrAddClass('show', submenuElement);
-                // changeIconPosition('closeAndOpen', index, position);
-            }
-                
+                changeIconPosition('closeAndOpen', index, position);
+            }    
         }
     }
     
     // Abrir submenu...
-    openSubmenu(submenuElement) {
+    openSubmenu(submenuElement, index) {
         this.changeStylesAndRemoveOrAddClass('show', submenuElement);
         
         // Cambiamos el icono a open.
-        // changeIconPosition('open', submenuElement);
+        changeIconPosition('open', index);
     }
 
     // Funcion para el conjunto de submenus...
@@ -241,7 +227,7 @@ class SubmenuRuny {
             this.closeSubmenu(submenuElement, index);
         } else {
             // Abrimos un submenu...
-            this.openSubmenu(submenuElement);
+            this.openSubmenu(submenuElement, index);
         }
     }
 
@@ -250,7 +236,7 @@ class SubmenuRuny {
         if (submenuElement.classList.contains('open-runy')) {
             this.closeSubmenu(submenuElement);
         } else {
-            this.openSubmenu(submenuElement);
+            this.openSubmenu(submenuElement, 0);
         }
     }
 
@@ -279,8 +265,8 @@ class SubmenuRuny {
 }
 
 // Variables necesarias.
-const btnRuny = document.querySelectorAll('.btn-r');
-const submenuRuny = document.querySelectorAll('.ser');
+const btnRuny = document.querySelectorAll('.btn-runy');
+const submenuRuny = document.querySelectorAll('.submenu-element-runy');
 const elementClassesOmitRuny = document.querySelectorAll('element-skip-runy');
 
 // Objeto para abrir o cerrar un submenu.
