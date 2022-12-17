@@ -25,25 +25,17 @@ function changeIconPosition (status, index, previousIndex) {
 
 // Clase que cierra un submenu al hacer scroll.
 class CloseSubmenuScroll {
-
-    closeSubmenu(submenuElement) {
+    closeSubmenu(submenuElement, index) {
         // Escuchamos el evento scroll
         window.addEventListener('scroll', () => {
+            if (submenuElement.classList.contains('open-runy')) {
+                submenuElement.style.display = 'none';
+                submenuElement.classList.remove('open-runy');
 
-            // Recoremos cada uno de los submenus y si esta abierto lo cerramos.
-            submenuElement.forEach((element, index) => {
-                if (element.classList.contains('open-runy')) {
-                    element.style.display = 'none';
-                    element.classList.remove('open-runy');
-
-                    // Cambiamos de posicion a cerrado el icono.
-                    changeIconPosition('close', index);
-                }
-            })
-
-
-        })    
-    
+                // Cambiamos la posicion del icono a cerrado.
+                changeIconPosition('close', index);
+            }
+        })
     }
 }
 
@@ -136,7 +128,7 @@ class SubmenuRuny {
     }
 
     // Funcion que oculta o muestra un submenu y agrega o remueve la clase open-runy.
-    changeStylesAndRemoveOrAddClass(toDo, submenuElement) {
+    changeStylesAndRemoveOrAddClass(toDo, submenuElement, index) {
         const windowScroll = new CloseSubmenuScroll();
         const windowClick = new CloseSubmenuScreen();
 
@@ -144,10 +136,10 @@ class SubmenuRuny {
             submenuElement.style.display = 'block';
 
             // Cerramos el submenu al hacer scroll.
-            windowScroll.closeSubmenu(this.submenuElement);
+            windowScroll.closeSubmenu(submenuElement, index);
 
             // Cerramos el submenu al hacer click en cualquier parte de la pantalla.
-            windowClick.closeSubmenu(this.submenuElement, this.elementClassesOmit);
+            // windowClick.closeSubmenu(this.submenuElement, this.elementClassesOmit);
         
         } else {
             submenuElement.style.display = 'none';
@@ -161,6 +153,7 @@ class SubmenuRuny {
         // Para un solo submenu...
         if (this.setOfSubmenus == false) {
             this.changeStylesAndRemoveOrAddClass('hidden', submenuElement);
+            changeIconPosition('close', index);
 
         // Para un conjunto de submenus...
         } else {
@@ -185,11 +178,11 @@ class SubmenuRuny {
             const hiddenSubmenu = this.changeStylesAndRemoveOrAddClass('hidden', this.submenuElement[position]);
             
             // Cerramos submenu.
-            if (close) {
+            if (close) {                
                 hiddenSubmenu;
     
                 // Cambiamos la posicion del icono a Close.
-                changeIconPosition('close', index);
+                changeIconPosition('close', position);
             
             // Cerramos y abrimos submenu.
             } else {
@@ -197,7 +190,7 @@ class SubmenuRuny {
                 hiddenSubmenu;
     
                 // abrimos el nuevo submenu... 
-                this.changeStylesAndRemoveOrAddClass('show', submenuElement);
+                this.changeStylesAndRemoveOrAddClass('show', submenuElement, index);
                 changeIconPosition('closeAndOpen', index, position);
             }    
         }
@@ -205,7 +198,8 @@ class SubmenuRuny {
     
     // Abrir submenu...
     openSubmenu(submenuElement, index) {
-        this.changeStylesAndRemoveOrAddClass('show', submenuElement);
+        console.log('Open...')
+        this.changeStylesAndRemoveOrAddClass('show', submenuElement, index);
         
         // Cambiamos el icono a open.
         changeIconPosition('open', index);
@@ -234,7 +228,7 @@ class SubmenuRuny {
     // Funcion para un solo submenu...
     onlySubmenu(submenuElement) {
         if (submenuElement.classList.contains('open-runy')) {
-            this.closeSubmenu(submenuElement);
+            this.closeSubmenu(submenuElement, 0);
         } else {
             this.openSubmenu(submenuElement, 0);
         }
