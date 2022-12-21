@@ -25,78 +25,55 @@ function changeIconPosition (status, index, previousIndex) {
 
 // Clase que cierra un submenu al hacer scroll.
 class CloseSubmenuScroll {
-    closeSubmenu(submenuElement, index) {
-        // Escuchamos el evento scroll
-        window.addEventListener('scroll', () => {
-            if (submenuElement.classList.contains('open-runy')) {
-                submenuElement.style.display = 'none';
-                submenuElement.classList.remove('open-runy');
+    constructor(submenuElement, index) {
+        this.submenu = submenuElement;
+        this.index = index;
+    }
 
-                // Cambiamos la posicion del icono a cerrado.
-                changeIconPosition('close', index);
-            }
-        })
+    scrolling () {
+
+        if (this.submenu.classList.contains('open-runy')) {
+            console.log('Removing...')
+            this.submenu.style.display = 'none';
+            this.submenu.classList.remove('open-runy');
+
+            // // Cambiamos la posicion del icono a cerrado.
+            // changeIconPosition('close', this.index);
+            // console.log('Cerramos con el scroll.')
+        } else {
+            console.log('AHHHH')
+        }
+    }
+
+    closeSubmenu() {
+        window.addEventListener('scroll', this.scrolling);
+        console.log(this.index)
     }
 }
 
 // Clase que cierra un submenu al hacer click en cualquier parte de la pagina web.
 class CloseSubmenuScreen {
-
-    // Metodo que retorna true o false si el elemento al que se le hizo click contiene una clase dada.
-    checkIfContainsClass(clickedElement, elementClassesToOmit) {
-        let containsClass = false;
-
-        for (const elementClass of elementClassesToOmit) {
-            if (clickedElement.classList.contains(elementClass)) {
-                containsClass = true;
-            }
-        }
-
-        return (containsClass ? true : false);
-        
-    };
-   
-
-    closeSubmenu(submenuElement, elementClassesToOmit) {
+    closeSubmenu(submenuElement, index) {
         window.addEventListener('click', (clickedElement) => {
-            const clickedElementContainsClass = this.checkIfContainsClass(clickedElement.target, elementClassesToOmit);
-            let isNodeList = false
+            const submemuOpen = submenuElement.classList.contains('open-runy')
+            const clickedElementContainsClass = clickedElement.target.classList.contains('element-skip-runy');
 
-            console.log(clickedElement.target);
-
-            if (submenuElement.length >= 0) {
-                isNodeList = true
-            }
-            
-            if (isNodeList) {
-
-                submenuElement.forEach(element => {
-                    if (element.classList.contains('visible') && !clickedElementContainsClass) {
-                        element.classList.remove('visible');
-                        console.log('Si entro')
-                  
-                    } else {
-                        console.log('No me entro bro!')
-                    }
-                });
-
+            // Si el submenu esta abierto y no contiene la clase para omitit cerramos...
+            if (submemuOpen && !clickedElementContainsClass) {
+                submenuElement.style.display = 'none';
+                submenuElement.classList.remove('open-runy');
+                console.log('Me cerraron :(')
             } else {
-                if (submenuElement.classList.contains('visible') && !clickedElementContainsClass) {
-                    submenuElement.classList.remove('visible');
-                    console.log('no soy un arry y entre :D')
-                }
+                console.log('Pasaste :)');
             }
-
-
         })
     }
 }
 
 class SubmenuRuny {
-    constructor(btnSubmenu, submenuElement, elementClassesOmit) {
-        this.btnSubmenu = btnSubmenu;
-        this.submenuElement = submenuElement;
-        this.elementClassesOmit =  elementClassesOmit;
+    constructor() {
+        this.btnSubmenu = document.querySelectorAll('.btn-runy');
+        this.submenuElement = document.querySelectorAll('.submenu-element-runy');
         this.setOfSubmenus = false;
     }
 
@@ -129,17 +106,19 @@ class SubmenuRuny {
 
     // Funcion que oculta o muestra un submenu y agrega o remueve la clase open-runy.
     changeStylesAndRemoveOrAddClass(toDo, submenuElement, index) {
-        const windowScroll = new CloseSubmenuScroll();
+        const windowScroll = new CloseSubmenuScroll(submenuElement, index);
         const windowClick = new CloseSubmenuScreen();
 
         if (toDo == 'show') {
             submenuElement.style.display = 'block';
 
             // Cerramos el submenu al hacer scroll.
-            windowScroll.closeSubmenu(submenuElement, index);
+            console.log('Listening scroll...')
+            windowScroll.closeSubmenu();
 
             // Cerramos el submenu al hacer click en cualquier parte de la pantalla.
-            // windowClick.closeSubmenu(this.submenuElement, this.elementClassesOmit);
+            // console.log('Listening click...')
+            // windowClick.closeSubmenu(submenuElement, index);
         
         } else {
             submenuElement.style.display = 'none';
@@ -150,6 +129,7 @@ class SubmenuRuny {
 
     // Cerrar submemu...
     closeSubmenu(submenuElement, index) {
+        console.log('Closed...')
         // Para un solo submenu...
         if (this.setOfSubmenus == false) {
             this.changeStylesAndRemoveOrAddClass('hidden', submenuElement);
@@ -258,11 +238,9 @@ class SubmenuRuny {
     }
 }
 
-// Variables necesarias.
-const btnRuny = document.querySelectorAll('.btn-runy');
-const submenuRuny = document.querySelectorAll('.submenu-element-runy');
-const elementClassesOmitRuny = document.querySelectorAll('element-skip-runy');
-
 // Objeto para abrir o cerrar un submenu.
-const submenu = new SubmenuRuny(btnRuny, submenuRuny, elementClassesOmitRuny);
+const submenu = new SubmenuRuny();
 submenu.start()
+
+// Proyecto pausado 21/12/2022
+// Razon adquirir mas conocimiento de la logica de programacion
